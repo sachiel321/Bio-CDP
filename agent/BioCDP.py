@@ -41,7 +41,17 @@ class Actor(nn.Module):
         return action
 
     def loss(self, action, state):
-        return F.mse_loss(self.forward(state), action, reduction='mean')
+        action_wrist = self.actor_wrist(state, False)
+        wrist_embedding = self.wrist_embedding(action_wrist.detach())
+        action_finger = self.actor_finger(state + wrist_embedding, False)
+        finger_embedding = self.finger_embedding(action_finger.detach())
+        action_sustain = self.actor_sustain(state + wrist_embedding + finger_embedding, False)
+
+        action_finger_data = torch.cat([action[:, 4:22], action[:, 26:-1]], dim=-1)
+        loss_wrist = F.mse_loss(action_wrist, torch.cat([action[:, :4], action[:, 22:26]], dim=-1), reduction='mean')
+        loss_finger = self.actor_finger.loss(action_finger_data, state + self.wrist_embedding(action_wrist))
+        loss_sustain = F.mse_loss(action_sustain, action[:, -1], reduction='mean')
+        return loss_wrist + loss_finger + loss_sustain
 
 class BioCDP(object):
     def __init__(self,
