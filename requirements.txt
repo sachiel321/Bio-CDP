@@ -1,0 +1,7 @@
+dm_env==1.6
+dm_env_wrappers==0.0.13
+dm_tree==0.1.8
+numpy==1.23.5
+robopianist==1.0.9
+torch==2.1.1
+tqdm==4.66.1
