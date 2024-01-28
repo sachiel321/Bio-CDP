@@ -61,10 +61,10 @@ def export_legend(legend, filename="legend.pdf"):
 def load_data(data_1, data_2):
 
     step_sac = np.array(data_1['Step'])
-    step_dipo = np.array(data_2['Step'])
+    step_biocdp = np.array(data_2['Step'])
     reward_sac = np.zeros([3, step_sac.shape[0]])
     reward_casac = np.zeros([3, step_sac.shape[0]])
-    reward_dipo = np.zeros([3, step_dipo.shape[0]])
+    reward_biocdp = np.zeros([3, step_biocdp.shape[0]])
 
     reward_sac[0, :] = np.array(data_1['SAC-RoboPianist-debug-CMajorScaleTwoHands-v0-44-1699612702.7078493--sac-v1_lr5e-4 - train/return'])
     reward_sac[1, :] = np.array(data_1['SAC-RoboPianist-debug-CMajorScaleTwoHands-v0-43-1699612636.2796128--sac-v1_lr5e-4 - train/return'])
@@ -74,15 +74,15 @@ def load_data(data_1, data_2):
     reward_casac[1, :] = np.array(data_1['SAC-RoboPianist-debug-CMajorScaleTwoHands-v0-43-1699667513.3532948--casac-v1_lr5e-4 - train/return'])
     reward_casac[2, :] = np.array(data_1['SAC-RoboPianist-debug-CMajorScaleTwoHands-v0-42-1699667346.0416853--casac-v1_lr5e-4 - train/return'])
 
-    reward_dipo[0, :] = np.array(data_2['SAC-RoboPianist-debug-CMajorScaleTwoHands-v0-44-1699603969.8992152--dipo-clipaction-CMajorScaleTwoHands - train/return'])
-    reward_dipo[1, :] = np.array(data_2['SAC-RoboPianist-debug-CMajorScaleTwoHands-v0-43-1699603917.91163--dipo-clipaction-CMajorScaleTwoHands - train/return'])
-    reward_dipo[2, :] = np.array(data_2['SAC-RoboPianist-debug-CMajorScaleTwoHands-v0-42-1699603784.8798096--dipo-clipaction-CMajorScaleTwoHands - train/return'])
+    reward_biocdp[0, :] = np.array(data_2['SAC-RoboPianist-debug-CMajorScaleTwoHands-v0-44-1699603969.8992152--dipo-clipaction-CMajorScaleTwoHands - train/return'])
+    reward_biocdp[1, :] = np.array(data_2['SAC-RoboPianist-debug-CMajorScaleTwoHands-v0-43-1699603917.91163--dipo-clipaction-CMajorScaleTwoHands - train/return'])
+    reward_biocdp[2, :] = np.array(data_2['SAC-RoboPianist-debug-CMajorScaleTwoHands-v0-42-1699603784.8798096--dipo-clipaction-CMajorScaleTwoHands - train/return'])
     
-    return step_sac, step_dipo,reward_sac, reward_casac, reward_dipo
+    return step_sac, step_biocdp,reward_sac, reward_casac, reward_biocdp
 
 df_1 = pd.read_csv('D:/study_in_CASIA/博二/Project11/作图/plot/CMajorScaleTwoHands-sac-casac.csv')
 df_2 = pd.read_csv('D:/study_in_CASIA/博二/Project11/作图/plot/CMajorScaleTwoHands-dipo.csv')
-step_sac, step_dipo,reward_sac, reward_casac, reward_dipo = load_data(df_1, df_2)
+step_sac, step_biocdp,reward_sac, reward_casac, reward_biocdp = load_data(df_1, df_2)
 map_name = 'CMajorScaleTwoHands'
 
 f, ax = plt.subplots(1,1,figsize=(12, 8))
@@ -96,7 +96,7 @@ RL_plot(ax,step_sac,reward_casac,color,'CASAC',100)
 
 
 color = 'b'
-RL_plot(ax,step_dipo,reward_dipo,color,'DiPo',100)
+RL_plot(ax,step_biocdp,reward_biocdp,color,'Bio-CDP',100)
 
 plt.tick_params(labelsize=23)
 plt.xlabel('Step×10k',fontsize=23)
